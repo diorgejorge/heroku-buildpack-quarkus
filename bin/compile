@@ -6,5 +6,5 @@ echo -n "-----> Package Jar"
 ./mvnw package
 echo "done"
 
-web: java -jar *.jar
+web: java -jar *-runner.jar
 EOF
