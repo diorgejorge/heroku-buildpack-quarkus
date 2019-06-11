@@ -2,59 +2,9 @@
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
 # fail fast
-set -e
-
-BP_DIR=$(cd $(dirname $0)/..; pwd) # absolute path
-BIN_DIR=$BP_DIR/bin
-
-# parse args
-BUILD_DIR=$1
-CACHE_DIR=$2
-ENV_DIR=$3
-
-JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-"https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/jvm-common.tgz"}
-mkdir -p /tmp/jvm-common
-curl --retry 3 --silent --location $JVM_COMMON_BUILDPACK | tar xzm -C /tmp/jvm-common --strip-components=1
-. /tmp/jvm-common/bin/util
-. /tmp/jvm-common/bin/java
-
-install_java_with_overlay ${BUILD_DIR}
-
-WILDFLY_VERSION="14.0.1.Final"
-JBOSS_HOME=".jboss/wildfly-${WILDFLY_VERSION}"
-
-cd $BUILD_DIR
-
-mkdir -p .jboss
-
-echo -n "-----> Installing Wildfly ${WILDFLY_VERSION}... "
-curl -O http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz
-echo "downloaded"
-tar xf wildfly-$WILDFLY_VERSION.tar.gz
-echo "extracted"
-mv wildfly-$WILDFLY_VERSION $JBOSS_HOME
-echo "moved"
-rm wildfly-$WILDFLY_VERSION.tar.gz
+echo -n "-----> Package Jar"
+./mvnw package
 echo "done"
 
-echo -n "-----> Deploying war file(s)... "
-cp target/*.war $JBOSS_HOME/standalone/deployments/ROOT.war
-echo "done"
-
-echo -n "-----> Override config file(s)... "
-cp configuration/*.properties $JBOSS_HOME/standalone/configuration/
-cp configuration/standalone.xml $JBOSS_HOME/standalone/configuration/
-echo "done"
-
-echo "-----> Creating configuration..."
-if [ -f $BUILD_DIR/Procfile ]; then
-  echo "        WARNING: overwriting existing Procfile"
-fi
-
-cat << EOF > $BUILD_DIR/Procfile
-web: \$JBOSS_HOME/bin/standalone.sh -b=0.0.0.0 -Djboss.http.port=\$PORT
-EOF
-
-cat << EOF > $BUILD_DIR/.profile.d/jboss.sh
-export JBOSS_HOME=${JBOSS_HOME}
+web: java -jar *.jar
 EOF
