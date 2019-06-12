@@ -15,17 +15,19 @@ install_maven() {
 
   status_pending "Installing Maven ${mavenVersion}"
   if is_supported_maven_version ${mavenVersion}; then
-    if [ "$mavenVersion" = "3.5.4" ]; then
-      mavenUrl="https://apache.org/dist/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz"
-    else
-      mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
-    fi
+    mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
     download_maven ${mavenUrl} ${installDir} ${mavenHome}
     status_done
   else
-    error_return "Error, you have defined an unsupported Maven version in the system.properties file.
-The default supported version is ${DEFAULT_MAVEN_VERSION}"
-    return 1
+    if [ "$mavenVersion" = "3.5.4" ]
+      mavenUrl="https://apache.org/dist/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz"
+      download_maven ${mavenUrl} ${installDir} ${mavenHome}
+      status_done
+    else
+      error_return "Error, you have defined an unsupported Maven version in the system.properties file.
+  The default supported version is ${DEFAULT_MAVEN_VERSION}"
+      return 1
+    fi
   fi
 }
 
@@ -51,8 +53,8 @@ is_supported_maven_version() {
     return 0
   elif [ "$mavenVersion" = "3.0.5" ]; then
     return 0
-  elif [ "$mavenVersion" = "3.5.4" ]; then
-    return 0
+  elif [ "$mavenVersion" = "3.5.4" ]; then # Unsupported version !!!
+    return 1
   else
     return 1
   fi
