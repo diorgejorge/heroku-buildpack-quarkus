@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
-# fail fast
+BP_DIR=$(cd $(dirname $0)/..; pwd) # absolute path
+
+source $BP_DIR/lib/common.sh
+
 echo -n "-----> Package Jar"
-./mvnw package
+
+$BP_DIR/bin/mvnw package
 echo "done"
 
 web: java -jar *-runner.jar
