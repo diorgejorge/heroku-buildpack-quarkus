@@ -38,7 +38,7 @@ download_maven() {
   echo "mavenHome: $mavenHome"
   rm -rf $mavenHome
   curl --retry 3 --silent --max-time 60 --location ${mavenUrl} | tar xzm -C $installDir
-  mv $installDir/apache-mave-3.5.4 $installDir/.maven  
+  mv $installDir/apache-maven-3.5.4 $installDir/.maven  
   chmod +x $mavenHome/bin/mvn
 }
 
