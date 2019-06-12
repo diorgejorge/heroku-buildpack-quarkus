@@ -37,7 +37,7 @@ download_maven() {
   echo "installDir: $installDir"
   echo "mavenHome: $mavenHome"
   rm -rf $mavenHome
-  curl --retry 3 --silent --max-time 60 --location ${mavenUrl} | tar xzm -C $installDir
+  curl --retry 3 --silent --max-time 60 --location ${mavenUrl} | tar xzm -C $mavenHome
   chmod +x $mavenHome/bin/mvn
 }
 
