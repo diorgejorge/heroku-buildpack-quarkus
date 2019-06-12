@@ -19,6 +19,7 @@ install_maven() {
       mavenUrl="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
     else
       mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
+    fi
     download_maven ${mavenUrl} ${installDir} ${mavenHome}
     status_done
   else
