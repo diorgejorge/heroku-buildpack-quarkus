@@ -19,7 +19,7 @@ install_maven() {
     download_maven ${mavenUrl} ${installDir} ${mavenHome}
     status_done
   else
-    if [ "$mavenVersion" = "3.5.4" ]
+    if [ "$mavenVersion" = "3.5.4" ]; then
       mavenUrl="https://apache.org/dist/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz"
       download_maven ${mavenUrl} ${installDir} ${mavenHome}
       status_done
