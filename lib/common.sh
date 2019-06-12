@@ -16,7 +16,7 @@ install_maven() {
   status_pending "Installing Maven ${mavenVersion}"
   if is_supported_maven_version ${mavenVersion}; then
     if [ "$mavenVersion" = "3.5.4" ]; then
-      mavenUrl="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+      mavenUrl="https://apache.org/dist/maven/maven-3/${mavenVersion}/binaries/apache-maven-${mavenVersion}-bin.tar.gz"
     else
       mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
     fi
@@ -33,12 +33,9 @@ download_maven() {
   local mavenUrl=$1
   local installDir=$2
   local mavenHome=$3
-  echo "mavenUrl: $mavenUrl" 
-  echo "installDir: $installDir"
-  echo "mavenHome: $mavenHome"
   rm -rf $mavenHome
   curl --retry 3 --silent --max-time 60 --location ${mavenUrl} | tar xzm -C $installDir
-  mv $installDir/apache-maven-3.5.4 $installDir/.maven  
+  mv $installDir/apache-maven-${mavenVersion} $installDir/.maven  
   chmod +x $mavenHome/bin/mvn
 }
 
