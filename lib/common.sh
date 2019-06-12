@@ -15,7 +15,10 @@ install_maven() {
 
   status_pending "Installing Maven ${mavenVersion}"
   if is_supported_maven_version ${mavenVersion}; then
-    mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
+    if [ "$mavenVersion" = "3.5.4" ]; then
+      mavenUrl="https://apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz"
+    else
+      mavenUrl="https://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
     download_maven ${mavenUrl} ${installDir} ${mavenHome}
     status_done
   else
@@ -45,6 +48,8 @@ is_supported_maven_version() {
   elif [ "$mavenVersion" = "3.1.1" ]; then
     return 0
   elif [ "$mavenVersion" = "3.0.5" ]; then
+    return 0
+  elif [ "$mavenVersion" = "3.5.4" ]; then
     return 0
   else
     return 1
