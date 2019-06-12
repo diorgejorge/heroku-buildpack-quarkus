@@ -29,8 +29,6 @@ if has_maven_wrapper $BUILD_DIR; then
   rm -rf $BUILD_DIR/.m2
 fi
 
-./mvnw package
-
 echo "-----> Creating configuration..."
 if [ -f $BUILD_DIR/Procfile ]; then
   echo "        WARNING: overwriting existing Procfile"
