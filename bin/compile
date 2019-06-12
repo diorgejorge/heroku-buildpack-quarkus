@@ -34,6 +34,8 @@ if [ -f $BUILD_DIR/Procfile ]; then
   echo "        WARNING: overwriting existing Procfile"
 fi
 
+cp target/*-runner.jar target/my-runner.jar
+
 cat << EOF > $BUILD_DIR/Procfile
 web: java -Dquarkus.http.port=\$PORT -jar target/my-runner.jar
 EOF
