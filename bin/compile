@@ -35,6 +35,6 @@ if [ -f $BUILD_DIR/Procfile ]; then
 fi
 
 cat << EOF > $BUILD_DIR/Procfile
-web: java -jar target/mvs-services-1.327-runner.jar
+web: java -Dquarkus.http.port=\$PORT -jar target/my-runner.jar
 EOF
 
